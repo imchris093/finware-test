@@ -23,8 +23,16 @@
 ```bash
 docker-compose up --build 
 ```
-4. Con los contenedores corriendo ejecuta:
+Ya con los contenedores corriendo, ejecutar migraciones (opcional seeder) con:
+```bash
+docker compose exec api npm run migrate
+docker compose exec api npm run seed
+```
+### Importante
 
+- Pasos 4 y 5 son necesarios cuando los logs muestran algun error durante la construccion del contenedor `ollama_llm` y aunque el contenedor este corriendo y en la red, es necesario agregar el modelo.
+
+4. Ejecutar 
 ```bash
 docker exec -it ollama_llm sh
 ```
@@ -33,12 +41,8 @@ docker exec -it ollama_llm sh
 ollama pull gemma3:270m
 ```
 
-4. Inicio por defecto de front `localhost:3000`
-5. Links de los endpoints con postman en `.postman/`
-
-### Importante
-
-- Pasos 4 y 5 son necesarios cuando los logs muestran algun error durante la construccion del contenedor `ollama_llm`.
+6. Inicio por defecto de front `localhost:3000`
+7. Links de los endpoints con postman en `.postman/`
 
 ## Estructura del Proyecto
 
