@@ -23,8 +23,22 @@
 ```bash
 docker-compose up --build 
 ```
+4. Con los contenedores corriendo ejecuta:
+
+```bash
+docker exec -it ollama_llm sh
+```
+5. dentro del contenedor
+```bash
+ollama pull gemma3:270m
+```
+
 4. Inicio por defecto de front `localhost:3000`
 5. Links de los endpoints con postman en `.postman/`
+
+### Importante
+
+- Pasos 4 y 5 son necesarios cuando los logs muestran algun error durante la construccion del contenedor `ollama_llm`.
 
 ## Estructura del Proyecto
 
@@ -100,6 +114,11 @@ Es usada para generar unicamente texto desde el modelo `gemma3:270m`, para evita
 
 - Se configura automaticamente desde `docker-compose.yml`
 - Su uso consta a travez del endpoint de `post - /api/v1/oportunidades`
+
+Si despues de la ejecucion de los contenedores recibes `404 model not found` del contenedor  ollama_llm, hay 2 opciones:
+
+- No tiene permisos de ejecución el script `ollama.sh`, darselos ejecutando `chmod +x ollama.sh` y volver a compilar y levantar los contenedores.
+- Ingresar al contenedor ollama_llm con `docker exec -it ollama_llm sh` y una vez dentro ejecutar `ollama pull gema3:270m`.
 
 ## Frontend
 
