@@ -1,0 +1,71 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER} 
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_PORT: ${DB_PORT}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.api
+    container_name: api
+    restart: always
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    depends_on:
+      - ollama
+      - db
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+      API_PORT: ${BACKEND_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      WEBAPP_URL: ${WEBAPP_URL}
+      OLLAMA_API_URL: ${OLLAMA_URL}
+      OLLAMA_MODEL: ${OLLAMA_MODEL}
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.front
+    container_name: webapp
+    restart: always
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    #esta config es para desarrollo.
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+  
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_llm
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./ollama/ollama.sh:/usr/local/bin/ollama/ollama.sh:ro
+    restart: unless-stopped
+    entrypoint: ["/usr/local/bin/ollama/ollama.sh"]
+
+volumes:
+  postgres_data:
+  ollama_data:

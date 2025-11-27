@@ -1,0 +1,498 @@
+{
+	"info": {
+		"_postman_id": "6d77c977-e386-4ef1-a5e0-6dffec748789",
+		"name": "Finware API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29619990"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Verificar que la respuesta sea exitosa",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"// Verificar que la respuesta contenga JSON válido",
+											"pm.test(\"Response is valid JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"// Extraer y asignar el token a la variable de entorno",
+											"pm.test(\"Extract and set Bearer token\", function () {",
+											"    const responseJson = pm.response.json();",
+											"    ",
+											"    // Verificar que el token existe en la respuesta",
+											"    pm.expect(responseJson).to.have.property('token');",
+											"    pm.expect(responseJson.token).to.be.a('string');",
+											"    pm.expect(responseJson.token).to.not.be.empty;",
+											"    ",
+											"    // Asignar el token a la variable de entorno Bearer",
+											"    pm.environment.set(\"Bearer\", responseJson.token);",
+											"    ",
+											"    console.log(\"Token extraído y asignado a la variable de entorno 'Bearer':\", responseJson.token);",
+											"});",
+											"",
+											"// Verificar que la respuesta contenga información del usuario",
+											"pm.test(\"Response contains user information\", function () {",
+											"    const responseJson = pm.response.json();",
+											"    ",
+											"    pm.expect(responseJson).to.have.property('user');",
+											"    pm.expect(responseJson.user).to.have.property('id');",
+											"    pm.expect(responseJson.user).to.have.property('email');",
+											"    pm.expect(responseJson.user).to.have.property('nombre');",
+											"    pm.expect(responseJson.user).to.have.property('apellido');",
+											"});",
+											"",
+											"// Verificar que la respuesta contenga el mensaje de éxito",
+											"pm.test(\"Response contains success message\", function () {",
+											"    const responseJson = pm.response.json();",
+											"    ",
+											"    pm.expect(responseJson).to.have.property('message');",
+											"    pm.expect(responseJson.message).to.include('exitoso');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"carlos.rodriguez@email.com\",\n    \"password\": \"MiPassword123!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/v1/auth/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "registro",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Verificar que la respuesta sea exitosa",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"// Verificar que la respuesta contenga JSON válido",
+											"pm.test(\"Response is valid JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"// Extraer y asignar el token a la variable de entorno",
+											"pm.test(\"Extract and set Bearer token\", function () {",
+											"    const responseJson = pm.response.json();",
+											"    ",
+											"    // Verificar que el token existe en la respuesta",
+											"    pm.expect(responseJson).to.have.property('token');",
+											"    pm.expect(responseJson.token).to.be.a('string');",
+											"    pm.expect(responseJson.token).to.not.be.empty;",
+											"    ",
+											"    // Asignar el token a la variable de entorno Bearer",
+											"    pm.environment.set(\"Bearer\", responseJson.token);",
+											"    ",
+											"    console.log(\"Token extraído y asignado a la variable de entorno 'Bearer':\", responseJson.token);",
+											"});",
+											"",
+											"// Verificar que la respuesta contenga información del usuario",
+											"pm.test(\"Response contains user information\", function () {",
+											"    const responseJson = pm.response.json();",
+											"    ",
+											"    pm.expect(responseJson).to.have.property('user');",
+											"    pm.expect(responseJson.user).to.have.property('id');",
+											"    pm.expect(responseJson.user).to.have.property('email');",
+											"    pm.expect(responseJson.user).to.have.property('nombre');",
+											"    pm.expect(responseJson.user).to.have.property('apellido');",
+											"});",
+											"",
+											"// Verificar que la respuesta contenga el mensaje de éxito",
+											"pm.test(\"Response contains success message\", function () {",
+											"    const responseJson = pm.response.json();",
+											"    ",
+											"    pm.expect(responseJson).to.have.property('message');",
+											"    pm.expect(responseJson.message).to.include('exitoso');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"Carlos\",\n    \"apellido\": \"Rodriguez\",\n    \"email\": \"carlos.rodriguez@email.com\",\n    \"telefono\": \"5551234567\",\n    \"fecha_nacimiento\": \"1990-05-15\",\n    \"password\": \"MiPassword123!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/v1/auth/register",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Operaciones",
+					"item": [
+						{
+							"name": "inversion",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"oportunidad_id\": \"bd326945-5ffb-497e-90fc-8360cfca8211\",\n    \"monto_invertido\": 100.30\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/v1/operations/invest",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"operations",
+										"invest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "inversiones/usuario",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/operations/user/:id/investments",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"operations",
+										"user",
+										":id",
+										"investments"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "bd326945-5ffb-497e-90fc-8360cfca8211"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "transacciones",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/operations/user/:id/transactions",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"operations",
+										"user",
+										":id",
+										"transactions"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "bd326945-5ffb-497e-90fc-8360cfca8211"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Oportunidades",
+					"item": [
+						{
+							"name": "oportunidades",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Bearer}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/opportunities",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"opportunities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "oportunidades",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\" : \"\",\n    \"monto_total\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/v1/opportunities",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"opportunities"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ollama",
+					"item": []
+				},
+				{
+					"name": "generate txt",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model\": \"gemma3:270m\",\n    \"prompt\": \"Dame un análisis de mercado muy corto sobre una oportunidad de inversion en un proyecto TACOS PERRONES y la inversion es de 100000 pesos mexicanos (conesta en español).\",\n    \"stream\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ollamaURL}}",
+							"host": [
+								"{{ollamaURL}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

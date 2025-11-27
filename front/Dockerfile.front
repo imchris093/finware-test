@@ -1,0 +1,9 @@
+# Usa una imagen base de Node
+FROM node:25-alpine
+WORKDIR /app
+COPY package*.json .
+RUN npm install
+COPY . .
+# Next.js corre en el puerto 3000 por defecto
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

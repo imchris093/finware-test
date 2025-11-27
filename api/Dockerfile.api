@@ -1,0 +1,34 @@
+# Stage 1: Build
+FROM node:25-alpine AS builder
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+RUN npm install
+
+# Copiar código fuente
+COPY . .
+
+# Stage 2: Production
+FROM node:25-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Crear usuario no-root para seguridad
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+
+# Copiar solo dependencias de producción
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app ./
+
+# Cambiar ownership
+RUN chown -R nodejs:nodejs /app
+
+USER nodejs
+
+EXPOSE 8080
+
+CMD ["npm", "start"]
